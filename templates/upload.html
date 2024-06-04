@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Survey File</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .upload-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+        .custom-file-label {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+        .custom-file-label:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #ffffff;
+        }
+        .btn-upload {
+            background-color: #28a745; /* Green color */
+            border-color: #28a745;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            font-size: 18px;
+            padding: 10px;
+        }
+        .btn-upload:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .btn-upload:focus {
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+        }
+        .btn-upload:active {
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+        .drop-area {
+            border: 2px dashed #007bff;
+            padding: 80px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+        }
+        .drop-area:hover {
+            border-color: #0056b3;
+        }
+        .drop-text {
+            font-size: 18px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container upload-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="mb-4">Upload Survey File</h1>
+                <div class="drop-area text-center mb-4" id="dropArea">
+                    <div class="drop-text">Drag and drop your survey file here</div>
+                </div>
+                <form method="post" action="{{ url_for('upload_file') }}" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" id="customFile" name="file" accept=".docx" style="display: none;" required>
+                        <label class="custom-file-label" for="customFile">Or choose survey file...</label>
+                        <div class="invalid-feedback">Please choose a DOCX file.</div>
+                    </div>
+                    <button type="submit" class="btn btn-upload">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Drag and drop functionality
+        var dropArea = document.getElementById('dropArea');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop area when file is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        // Unhighlight drop area when file is dragged away from it
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight() {
+            dropArea.classList.add('bg-primary', 'text-light');
+        }
+
+        function unhighlight() {
+            dropArea.classList.remove('bg-primary', 'text-light');
+        }
+
+        function handleDrop(e) {
+            var dt = e.dataTransfer;
+            var files = dt.files;
+
+            handleFiles(files);
+        }
+
+        // Handle file selection through traditional file input
+        document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+            var files = e.target.files;
+            handleFiles(files);
+        });
+
+        // Handle file selection and display file name
+        function handleFiles(files) {
+            if (files.length > 0) {
+                var file = files[0];
+                document.getElementById('customFile').files = files;
+                document.querySelector('.custom-file-label').innerText = file.name;
+            }
+        }
+
+        // Form validation and submission handling
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var form = document.querySelector('.needs-validation');
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }, false);
+        })();
+    </script>
+</body>
+</html>

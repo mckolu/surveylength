@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .results-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        .rectangular-container {
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 12px;
+            width: 400px;
+            height: 200px;
+            margin: 0 auto 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 48px;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+        }
+        .rectangular-container span {
+            font-size: 24px;
+            font-weight: 400;
+            margin-top: 10px;
+        }
+        .result-item {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+        .result-item span {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-check-label {
+            font-weight: 400;
+        }
+        .range-container {
+            margin-top: 20px;
+            position: relative;
+        }
+        .range-label {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #6c757d;
+        }
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e9ecef;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .15s ease-in-out;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #007bff;
+            cursor: pointer;
+            transition: background .15s ease-in-out;
+        }
+        .slider::-webkit-slider-thumb:hover {
+            background: #0056b3;
+        }
+        .btn-back {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            padding: 8px 20px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto 0;
+            text-align: center;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-back:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+        }
+        .bottom-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container results-container">
+        <h1>Survey Results</h1>
+        
+        <div class="rectangular-container">
+            <div id="survey-duration">{{ data['Estimated Survey Duration'] }}</div>
+            <span>Minutes</span>
+        </div>
+        
+        <div class="form-group">
+            <label for="mode">MODE:</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="mode" id="mode-web" value="web" checked>
+                <label class="form-check-label" for="mode-web">Web</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="mode" id="mode-phone" value="phone">
+                <label class="form-check-label" for="mode-phone">Phone</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="language">LANGUAGE:</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="language" id="language-english" value="english" checked>
+                <label class="form-check-label" for="language-english">English</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="language" id="language-spanish" value="spanish">
+                <label class="form-check-label" for="language-spanish">Spanish</label>
+            </div>
+        </div>
+        <div class="range-container">
+            <label for="age-range" class="range-label">Age Range: <span id="age-value">18</span></label>
+            <input type="range" class="slider" id="age-range" min="18" max="99" value="18">
+        </div>
+
+        <div class="bottom-section">
+            <div class="result-item">
+                <span>Number of Questions:</span> {{ data['Number of Questions'] }}
+            </div>
+            <div class="result-item">
+                <span>Number of Words:</span> {{ data['Number of Words'] }}
+            </div>
+            <div class="result-item">
+                <span>Level of Reader:</span> {{ data['Level of Reader'] }}
+            </div>
+        </div>
+
+        <a href="/" class="btn btn-back">Upload Another File</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Update Estimated Survey Duration based on mode, language, and age range
+        function updateEstimatedDuration() {
+            var baseDuration = parseFloat("{{ data['Estimated Survey Duration'] }}");
+            var modeFactor = document.querySelector('input[name="mode"]:checked').value === 'phone' ? 1.7 : 1;
+            var languageFactor = document.querySelector('input[name="language"]:checked').value === 'spanish' ? 1.2 : 1;
+            var ageFactor = 1 + (parseFloat(document.getElementById('age-range').value) - 18) * 0.05;
+
+            var estimatedDuration = baseDuration * modeFactor * languageFactor * ageFactor;
+            document.getElementById('survey-duration').innerText = estimatedDuration.toFixed(2);
+            document.getElementById('age-value').innerText = document.getElementById('age-range').value;
+        }
+
+        // Event listeners for mode and language radios
+        document.querySelectorAll('input[name="mode"]').forEach(function(radio) {
+            radio.addEventListener('change', updateEstimatedDuration);
+        });
+
+        document.querySelectorAll('input[name="language"]').forEach(function(radio) {
+            radio.addEventListener('change', updateEstimatedDuration);
+        });
+
+        // Event listener for age range slider
+        document.getElementById('age-range').addEventListener('input', updateEstimatedDuration);
+
+        // Initial call to update Estimated Survey Duration
+        updateEstimatedDuration();
+    </script>
+</body>
+</html>
